@@ -1,5 +1,6 @@
 package resttest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,12 +19,18 @@ import java.util.List;
 public class SpringConf {
 
     @Bean
-    public RequestMappingHandlerAdapter requestMappingHandlerAdapter() {
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+        return new MappingJackson2HttpMessageConverter();
+    }
+
+    @Bean
+    @Autowired
+    public RequestMappingHandlerAdapter requestMappingHandlerAdapter(MappingJackson2HttpMessageConverter converter) {
         List<HttpMessageConverter<?>> list = new ArrayList<HttpMessageConverter<?>>();
-        list.add(new MappingJackson2HttpMessageConverter());
-        RequestMappingHandlerAdapter requestMappingHandlerAdapter = new RequestMappingHandlerAdapter();
-        requestMappingHandlerAdapter.setMessageConverters(list);
-        return requestMappingHandlerAdapter;
+        list.add(converter);
+        RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
+        adapter.setMessageConverters(list);
+        return adapter;
     }
 
 }
