@@ -19,13 +19,13 @@ import java.util.List;
 public class SpringConf {
 
     @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+    public HttpMessageConverter<?> httpMessageConverter() {
         return new MappingJackson2HttpMessageConverter();
     }
 
     @Bean
     @Autowired
-    public RequestMappingHandlerAdapter requestMappingHandlerAdapter(MappingJackson2HttpMessageConverter converter) {
+    public RequestMappingHandlerAdapter requestMappingHandlerAdapter(HttpMessageConverter<?> converter) {
         List<HttpMessageConverter<?>> list = new ArrayList<HttpMessageConverter<?>>();
         list.add(converter);
         RequestMappingHandlerAdapter adapter = new RequestMappingHandlerAdapter();
